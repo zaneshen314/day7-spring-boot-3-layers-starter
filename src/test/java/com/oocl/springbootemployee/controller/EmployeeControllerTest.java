@@ -212,4 +212,31 @@ class EmployeeControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(givenEmployees.get(2).getGender().name()))
             .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(givenEmployees.get(2).getSalary()));
     }
+
+    @Test
+    void should_return_employee_not_found_exception_with_404_status_when_update_a_not_existed_employee() throws Exception {
+        // given
+        int givenId = 99;
+        String givenName = "A Not Existed Employee";
+        Integer givenAge = 30;
+        Gender givenGender = Gender.FEMALE;
+        Double givenSalary = 5432.0;
+        String givenEmployee = String.format(
+                "{\"id\": %s, \"name\": \"%s\", \"age\": \"%s\", \"gender\": \"%s\", \"salary\": \"%s\"}",
+                givenId,
+                givenName,
+                givenAge,
+                givenGender,
+                givenSalary
+        );
+        // when
+        // then
+        client.perform(MockMvcRequestBuilders.put("/employees/" + givenId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(givenEmployee)
+                )
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("EmployeeNotFoundException"));
+    }
+
 }
