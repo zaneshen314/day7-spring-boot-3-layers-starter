@@ -20,4 +20,17 @@ public class EmployeeService {
     public Employee creat(Employee employee) {
         return employeeRepository.addEmployee(employee);
     }
+
+    public Employee update(Integer employeeId, Employee employee){
+        Employee employeeExisted = employeeRepository.getEmployeeById(employeeId);
+
+        var nameToUpdate = employee.getName() == null ? employeeExisted.getName() : employee.getName();
+        var ageToUpdate = employee.getAge() == null ? employeeExisted.getAge() : employee.getAge();
+        var genderToUpdate = employee.getGender() == null ? employeeExisted.getGender() : employee.getGender();
+        var salaryToUpdate = employee.getSalary() == null ? employeeExisted.getSalary() : employee.getSalary();
+
+        final var employeeToUpdate = new Employee(employeeId, nameToUpdate, ageToUpdate, genderToUpdate, salaryToUpdate);
+
+        return employeeRepository.updateEmployee(employeeId, employeeToUpdate);
+    }
 }

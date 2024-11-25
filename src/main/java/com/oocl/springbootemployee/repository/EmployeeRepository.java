@@ -42,7 +42,7 @@ public class EmployeeRepository implements IEmployeeRepository {
     public List<Employee> getEmployeesByGender(Gender gender) {
         return employees.stream()
             .filter(employee -> employee.getGender().equals(gender))
-            .collect(Collectors.toList());
+            .toList();
     }
 
     @Override
